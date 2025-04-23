@@ -1,0 +1,173 @@
+---
+title: "Introduction to Machine Learning"
+author: "Sebastian Wójcik"
+date: "today"
+format:
+  revealjs:
+    incremental: true 
+    # theme: default
+    margin-top: 180px
+    css: "style.css"
+    title-slide-attributes:
+      slide-number: true
+      slide-number-format: "%current%" 
+      data-background-color: "#4e4e4e"
+      data-background-image: "Images/Template1.png"
+---
+
+
+# Introduction {background-image="Images/TemplateSL2.png"}
+
+## Purpose and Scope of Machine Learning {background-image="Images/TemplateSL2.png"}
+
+* What is the purpose of Machine Learning?
+  * Learn patterns from data automatically
+  * Make predictions or decisions without explicit programming
+  * Improve performance over time as more data becomes available
+* Key Goals
+  * Prediction – Estimate future or unknown outcomes
+  * Classification – Assign labels to data points
+  * Clustering – Discover hidden groupings in data
+  * Anomaly detection – Identify unusual patterns or events
+* Scope of Applications
+  * Healthcare, finance, marketing, industry, security, and more
+  * Examples: spam filtering, disease diagnosis, fraud detection, recommendation systems
+* Core Idea
+  * "Let the data speak for itself."
+
+
+
+## Recent Advancements in Machine Learning {background-image="Images/TemplateSL2.png"}
+
+* Deep Learning Breakthroughs
+  * Transformer architectures (e.g., BERT, GPT) revolutionized NLP
+  * Diffusion models for image generation (e.g., DALL·E, Stable Diffusion)
+  * Self-supervised learning for more efficient training
+* Automated Machine Learning (AutoML)
+  * Model selection, tuning, and deployment made easier
+  * Tools: Google AutoML, Auto-sklearn, H2O.ai
+* Explainable AI (XAI)
+  * Methods like SHAP, LIME help interpret complex models
+  * Greater trust and transparency in predictions
+* Federated & Privacy-Preserving Learning
+  * Learning across decentralized data sources
+  * Preserves user privacy (e.g., in mobile devices)
+* Real-Time & Edge ML
+  * ML models running on low-power devices
+  * Applications: smart cameras, IoT, mobile health tracking
+* Models trained on diverse tasks and data types combining text, image, audio (e.g., CLIP, Gemini)
+
+
+
+## Supervised vs. Unsupervised Learning {background-image="Images/TemplateSL2.png"}
+
+-   Supervised learning relies on labeled data for training models, making it effective for tasks such as spam detection and medical diagnosis.
+-   In contrast, unsupervised learning discovers hidden patterns in unlabeled data, commonly used in customer segmentation and anomaly detection.
+
+# Machine learning vs. Statistical learning {background-image="Images/TemplateSL2.png"}
+
+# {background-image="Images/TemplateSL2.png"}
+
+
+
+![](Images/MLvsSL.jpg){style="display: block; margin: auto; width: 60%; height: 60%;"}
+
+
+## Machine learning vs. Statistical learning {background-image="Images/TemplateSL2.png"}
+
+-   Statistical learning
+    -   Used to explain relationships between variables and for statistical inference
+    -   High interpretability at the cost of limited predictive power
+-   Machine learning
+    -   Mainly used for prediction
+    -   High predictive power at the cost of interpretability
+
+## Supervised vs. Unsupervised Learning {background-image="Images/TemplateSL2.png"}
+
+- Multiplicity of Model Hyperparameters
+  - Linear Model (OLS): no parameters
+  - K-NN: k - number of neighbours
+  - Decision Tree: cp, minbucket, minsplit, maxdepth
+  - Random Forest: cp, minbucket, minsplit, maxdepth, ntree, mtry
+- Multiplicity of Algorithms
+  - Decision Tree: CART, ID3, C4.5, C5.0, CHAID
+  - Random Forest: Bagging, Random Patches, Random Subspaces, Pasting
+  
+## Hyperparameters {background-image="Images/TemplateSL2.png"}
+
+- Hyperparameters in machine learning are the settings or configurations that you set before training a model — they control how the model learns from data.
+- They are not learned from the data directly, but rather are set manually or through tuning.
+- They significantly influence:
+  - Model accuracy
+  - Training time
+  - Overfitting or underfitting
+
+## Hyperparameters {background-image="Images/TemplateSL2.png"}
+
+To reveal the power of hyperparameters, let's start with this simple example of `cars` datasets in `R` showing relation between the speed of cars and the distances taken to stop. 
+
+```{r echo=TRUE}
+data(cars)
+plot(cars,col='blue',pch=16)
+```
+
+## Hyperparameters {background-image="Images/TemplateSL2.png"}
+
+First, we estimate a simple linear model an check Mean Squared Error (MSE) with package `ModelMetrics`.
+
+```{r echo=TRUE}
+if (!require("ModelMetrics")) install.packages("ModelMetrics")
+library(ModelMetrics)
+
+lm_model <- lm(dist~speed,data=cars)
+mse(actual = cars$dist, predicted = lm_model$fitted.values)
+```
+
+MSE amounted to
+
+```{r echo=TRUE}
+mse(actual = cars$dist, predicted = lm_model$fitted.values)
+```
+
+## Hyperparameters {background-image="Images/TemplateSL2.png"}
+
+Now, we shall use a regression tree from package `rpart` with hyperparameter called **Complexity parameter** set to `cp=0.3`.
+
+```{r echo=TRUE}
+if (!require("rpart")) install.packages("rpart")
+library(rpart)
+treemodel <- rpart(dist~speed,data=cars,control = rpart.control(cp=0.3))
+```
+
+MSE amounted to
+
+```{r echo=TRUE}
+mse(actual = cars$dist, predicted = predict(treemodel))
+```
+
+## Hyperparameters {background-image="Images/TemplateSL2.png"}
+
+This time we set `cp=0.01`.
+
+```{r echo=TRUE}
+treemodel <- rpart(dist~speed,data=cars,control = rpart.control(cp=0.01)) # default value of cp
+```
+
+MSE amounted to
+
+```{r echo=TRUE}
+mse(actual = cars$dist, predicted = predict(treemodel))
+```
+
+Note that MSE changed just by playing with `cp` while the training datasets remained the same.
+
+## Hyperparameters {background-image="Images/TemplateSL2.png"}
+
+- How to choose hyperparameters? 
+- Through hyperparameter tuning, using methods like:
+  - Grid Search
+  - Random Search
+  - Bayesian Optimization
+  - Cross-Validation
+
+  
